@@ -1,0 +1,61 @@
+#그냥 구현문제임 문제 제대로 읽었으면 빨리풀었을듯
+def is_right_p(p):
+    if p == "":
+        return 9999
+    count=0
+    for idx,pos in enumerate(p):
+        if pos == '(':
+            count+=1
+        else:
+            count-=1
+        if count<0:
+            break
+    else:
+        return True
+    return False
+def devide_p(p):
+    count=0
+    for idx , pos in enumerate(p):
+        if pos == '(':
+            count+=1
+        else:
+            count-=1
+        if count==0:
+            break
+    return p[:idx+1],p[idx+1:]
+def reverse_p(p):
+    p=list(p)
+    for idx,pos in enumerate(p):
+        if pos =='(':
+            p[idx]=')'
+        else:
+            p[idx]='('
+    res=""
+    for item in p:
+        res=res+item
+    return res
+def solution(p):
+    if len(p)==0:
+        return ""
+    
+    u,v=devide_p(p)
+#다른사람은 이렇게 풀었더라 ㄷㄷ;
+def solution(p):
+    if p=='': return p
+    r=True; c=0
+    for i in range(len(p)):
+        if p[i]=='(': c-=1
+        else: c+=1
+        if c>0: r=False
+        if c==0:
+            if r:
+                return p[:i+1]+solution(p[i+1:])
+            else:
+                return '('+solution(p[i+1:])+')'+''.join(list(map(lambda x:'(' if x==')' else ')',p[1:i]) ))
+    
+    if is_right_p(u):
+        return u+solution(v)
+    else:
+        return '('+solution(v)+')'+str(reverse_p(u[1:-1]))
+    
+        

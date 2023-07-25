@@ -1,0 +1,24 @@
+#시간복잡도를 줄이기 위해 dictionary를 이용해 해결하였음
+def solution(participant, completion):
+    answer = ''
+    participant=sorted(participant)
+    completion=sorted(completion)
+    my_dict={}
+    for man in participant:
+        if man in my_dict:
+            my_dict[man]+=1
+        else:
+            my_dict[man]=1
+    for man in completion:
+        my_dict[man]-=1
+    
+    for key,value in my_dict.items():
+        if value > 0:
+            return key
+#Counter함수를 이용해서 푼 사람도 있었음 짧으면서 시간복잡도도 더 낮았음
+#Counter함수는 Counter(["a","b","c","d","d"]) - Counter(["a","b"]) 했을때 'd':2 'd' :1 이런식으로 결과를 나타냄
+import collections
+
+def solution(participant, completion):
+    answer = collections.Counter(participant) - collections.Counter(completion)
+    return list(answer.keys())[0]

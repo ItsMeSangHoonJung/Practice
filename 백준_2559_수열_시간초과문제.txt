@@ -1,0 +1,17 @@
+def solution(n,k,temperature):
+    if n==k:
+        return sum(temperature)
+    prev_sum=max=(sum(temperature[0:0+k]))
+    temp=temperature[0]
+    for i in range(1,n-k+1):
+        if(max<prev_sum-temp+temperature[i+k-1]):
+            max=prev_sum-temp+temperature[i+k-1]
+        prev_sum,temp=prev_sum-temp+temperature[i+k-1],temperature[i]
+    return max
+
+n,k=input().split(" ")
+tmp=input().split(" ")
+for i in range(len(tmp)):
+    tmp[i]=int(tmp[i])
+print(solution(int(n),int(k),tmp))
+	

@@ -1,0 +1,18 @@
+def solution(lottos, win_nums):
+    answer = []
+    count=0
+    for i in lottos:
+        if i in win_nums:
+            count+=1   
+    if (count+lottos.count(0)) == 0:
+        a=(count+lottos.count(0))+1
+    else:
+        a=(count+lottos.count(0))
+    if count ==0 :
+        b=count+1
+    else:
+        b=count 
+    return (7-a,7-b)
+#if-else 문을 이렇게 깔끔하게 바꿀수있음 
+    rank=[6,6,5,4,3,2,1]
+    return(rank[count+lottos.count(0)],rank[count])    

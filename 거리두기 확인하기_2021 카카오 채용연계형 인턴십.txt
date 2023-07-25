@@ -1,0 +1,81 @@
+#나는 사이에 맨허튼경로 2개에 x가 있으면 distance를 99 를 주는식으로 풀었는데
+#맨허튼 경로를 구하는 것도 아니고 거리고 2이상이면 안된다는 편법으로 풀었음
+#그래서 이렇게 다 하는것보다 다른사람의 풀이를 보았는데
+#거리가 2이상이면 안된다는 것을 이용해서 for문 2개로 cell 상하좌우에 p가 있거나 대각선에 p가 있는데 x로 막혀있지 않은경우를 
+#찾아내는걸로 쉽게 풀었음
+def mh(place,a,b):
+    path1,path2=True,True
+    if a[1]<=b[1]:
+        for y in range(a[0],b[0]+1):
+            #path1
+            if place[y][a[1]]=="X":
+                path1=False
+            #path2
+            if place[y][b[1]]=="X":
+                path2=False
+        for x in range(a[1],b[1]+1):
+            #path1
+            if place[b[0]][x]=="X":
+                path1=False
+            #path2
+            if place[a[0]][x]=="X":
+                path2=False
+    else:
+        for y in range(a[0],b[0]+1):
+            #path1
+            if place[y][a[1]]=="X":
+                path1=False
+            #path2
+            if place[y][b[1]]=="X":
+                path2=False
+        for x in range(b[1],a[1]+1):
+            #path1
+            if place[b[0]][x]=="X":
+                path1=False
+            #path2
+            if place[a[0]][x]=="X":
+                path2=False
+    if path1 or path2:
+        return abs(a[0]-b[0])+abs(a[1]-b[1])
+    else:
+        return 99
+def solution(places):
+    answer = []  
+    for place in places:
+        lists=[]
+        for i in range(5):
+            for j in range(5):
+                if place[i][j]=='P':
+                    lists.append([i,j])
+        res=1
+        for i in range(len(lists)-1):
+            for j in range(i+1,len(lists)):
+                if mh(place,lists[i],lists[j])>2:
+                    continue
+                else:     
+                    res=0
+                    
+        answer.append(res)
+    return answer
+#
+def check(place):
+    for irow, row in enumerate(place):
+        for icol, cell in enumerate(row):
+            if cell != 'P':
+                continue
+            if irow != 4 and place[irow + 1][icol] == 'P':
+                return 0
+            if icol != 4 and place[irow][icol + 1] == 'P':
+                return 0
+            if irow < 3 and place[irow + 2][icol] == 'P' and place[irow + 1][icol] != 'X':
+                return 0
+            if icol < 3 and place[irow][icol + 2] == 'P' and place[irow][icol + 1] != 'X':
+                return 0
+            if irow != 4 and icol != 4 and place[irow + 1][icol + 1] == 'P' and (place[irow + 1][icol] != 'X' or place[irow][icol + 1] != 'X'):
+                return 0
+            if irow != 4 and icol != 0 and place[irow + 1][icol - 1] == 'P' and (place[irow + 1][icol] != 'X' or place[irow][icol - 1] != 'X'):
+                return 0
+    return 1
+
+def solution(places):
+    return [check(place) for place in places]

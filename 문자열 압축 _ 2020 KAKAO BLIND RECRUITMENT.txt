@@ -1,0 +1,20 @@
+def solution(s):
+    answer = []
+    if len(s) == 1: 
+        return 1
+    for cutlen in range(1,len(s)//2+1):
+        temp=s[0:cutlen]
+        count=1
+        res=""
+        for now in range(cutlen,len(s)+cutlen,cutlen):
+            if temp==s[now:now+cutlen]:
+                count+=1
+            else:
+                if count==1:
+                    res=res+temp
+                else:
+                    res=res+str(count)+temp
+                count=1
+                temp=s[now:now+cutlen]
+        answer.append(len(res))
+    return min(answer)

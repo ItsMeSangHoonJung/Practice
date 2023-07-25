@@ -1,0 +1,45 @@
+#틱택토는 경우의수가 별로 없어서 직접 다 구현하는게 쉬웠다
+from collections import Counter
+def solution(board):
+    answer = -1
+    onum,xnum=0,0
+    owin,xwin=0,0
+    for b in board:
+        if Counter(b)['O']==3:
+            owin+=1
+        if(Counter(b)['X']==3):
+            xwin+=1
+        onum+=Counter(b)['O']
+        xnum+=Counter(b)['X']
+    for i in range(3):
+        if board[0][i]=='O' and board[1][i]=='O' and board[2][i]=='O':
+            owin +=1
+        if board[0][i]=='X' and board[1][i]=='X' and board[2][i]=='X':
+            xwin +=1
+    if board[0][0]=='O' and board[1][1] == 'O' and board[2][2] == 'O':
+        owin+=1
+    if board[0][2]=='O' and board[1][1] == 'O' and board[2][0] == 'O':
+        owin+=1
+    if board[0][0]=='X' and board[1][1] == 'X' and board[2][2] == 'X':
+        xwin+=1
+    if board[0][2]=='X' and board[1][1] == 'X' and board[2][0] == 'X':
+        xwin+=1
+        
+    if(onum<xnum):
+        return 0
+    elif(onum-xnum>1):
+        return 0
+    
+    if owin and onum==xnum:
+        return 0
+    elif xwin and onum!=xnum:
+        return 0
+
+    if board==["OOO","XXO","XXO"] or board==["OOO","OXX","OXX"] or board==["XXO","XXO","OOO"] or board==["OXX","OXX","OOO"] or board==["OXO","XOX","OXO"]:
+        return 1
+    elif owin and xwin:
+        return 0
+
+
+    
+    return 1

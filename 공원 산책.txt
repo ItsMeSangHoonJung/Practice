@@ -1,0 +1,83 @@
+#코딩라인이 길어지면 생기는 오타때문에 코드가 틀리는 경우가 대다수였음
+def solution(park, routes):
+    answer = []
+    start=[]
+    #find index of Start
+    for i,row in enumerate(park):
+        if 'S' in row:
+            (y,x)=(i,row.index("S"))
+            break
+    print("Park size :" ,len(park[0]),len(park))
+    for p in park:
+        print(p)
+    
+    for route in routes:
+        skip_route=False
+        direction, step = route.split(" ")
+        print(routes.index(route),"Lap: ",direction,int(step))
+        if int(step)>len(park[0])or int(step) > len(park):
+            continue
+        elif direction == 'N':
+            nx,ny=x,y-int(step)
+            
+            if not(0<=nx<len(park[0]) and 0<=ny<len(park)):
+                skip_route=True
+                print("Skip by out of range")
+                continue
+            for i in range(ny,y+1):
+                if park[i][x]=='X':
+                    skip_route=True
+                    print("Skip by obstacle")
+                    break
+            else:
+                skip_route=False
+                    
+        elif direction == 'S':
+            nx,ny=x,y+int(step)
+            print(ny,nx)
+            if not(0<=nx<len(park[0]) and 0<=ny<len(park)):
+                skip_route=True
+                print("Skip by out of range")
+                continue
+            for i in range(y,ny+1):
+                if park[i][x]=='X':
+                    skip_route=True
+                    print("Skip by obstacle")
+                    break
+            else:
+                skip_route=False
+        elif direction == 'W':
+            nx,ny=x-int(step),y
+            if not(0<=nx<len(park[0]) and 0<=ny<len(park)):
+                skip_route=True
+                print("Skip by out of range")
+                continue
+            for i in range(nx,x+1):
+                if park[y][i]=='X':
+                    skip_route=True
+                    print("Skip by obstacle")
+                    break
+            else:
+                skip_route=False
+        else:
+            nx,ny=x+int(step),y
+            if not(0<=nx<len(park[0]) and 0<=ny<len(park)):
+                skip_route=True
+                print("Skip by out of range")
+                continue
+            for i in range(x,nx+1):
+                if park[y][i]=='X':
+                    skip_route=True
+                    print("Skip by obstacle")
+                    break
+            else:
+                skip_route=False
+        if(skip_route == True):
+            continue
+        
+        
+        print("Start Point: (y,x)",y,x,"->","End Point (ny,nx)",ny,nx)
+        x,y=nx,ny
+        
+    
+    return (y,x)

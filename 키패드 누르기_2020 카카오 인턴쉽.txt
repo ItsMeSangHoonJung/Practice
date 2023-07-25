@@ -1,0 +1,36 @@
+def solution(numbers, hand):
+    answer = ''
+    numpad=[[1,2,3],[4,5,6],[7,8,9],['*',0,'#']]
+    Lpos=(3,0)
+    Rpos=(3,2)
+    L=0
+    R=0
+    for num in numbers:
+        for i in range(4):
+            if num in numpad[i]:
+                break
+        pos=(i,numpad[i].index(num))
+        L=abs(pos[0]-Lpos[0])+abs(pos[1]-Lpos[1])
+        R=abs(pos[0]-Rpos[0])+abs(pos[1]-Rpos[1])
+
+        if(num==1 or num==4 or num==7):
+            answer=answer+'L'
+            Lpos=pos
+        elif(num==3 or num==6 or num==9):
+            answer=answer+'R'
+            Rpos=pos
+        elif(L<R):
+            answer=answer+'L'
+            Lpos=pos
+        elif(R<L):
+            answer=answer+'R'
+            Rpos=pos
+        elif(hand=="right"):
+            answer=answer+'R'
+            Rpos=pos
+        else:
+            answer=answer+'L'
+            Lpos=pos
+        
+                
+    return answer

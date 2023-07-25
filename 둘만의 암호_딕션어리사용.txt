@@ -1,0 +1,66 @@
+#제약사항에 skip에 포함되는 알파벳은 s에 포함되지 않는다고함 -> 이거 알았으면 조금더 쉽게 풀수 있지않았을까
+def solution(word, skip, index):
+    answer = ''
+    
+    my_dict={}
+    hh = "abcdefghijklmnopqrstuvwxyz"
+    for s in skip:
+        if s in hh:
+            hh=hh.replace(s,'')
+    for h in hh:
+        my_dict[h]=ord(h)
+        
+    for char in word:
+        _next=char
+        for i in range(index):
+            if _next=='z':
+                _next='a'
+            else:   
+                _next=chr(ord(_next)+1)
+                
+            while True:
+                if _next in my_dict:
+                    break
+                else:
+                    if(_next=='z'):
+                        _next='a'
+                    else: 
+                        _next=chr(ord(_next)+1)
+        answer=answer+(_next)
+
+
+    return answer
+
+#그 제약사항을 적용한 문제풀이방법
+from string import ascii_lowercase
+
+def solution(s, skip, index):
+    result = ''
+
+    a_to_z = set(ascii_lowercase)
+    a_to_z -= set(skip)
+    a_to_z = sorted(a_to_z)
+    l = len(a_to_z)
+
+    dic_alpha = {alpha:idx for idx, alpha in enumerate(a_to_z)}
+
+    for i in s:
+        result += a_to_z[(dic_alpha[i] + index) % l]
+
+    return result
+#위를 보고 내꺼를 바꾼것
+def solution(word, skip, index):
+    answer = ''
+    my_dict={}
+    a_to_z={}
+    hh = "abcdefghijklmnopqrstuvwxyz"
+    for s in skip:
+        if s in hh:
+            hh=hh.replace(s,'')
+    for i,h in enumerate(hh):
+        my_dict[h]=i
+        a_to_z[i]=h
+    l=len(my_dict)
+    for s in word:
+        answer=answer+a_to_z[(my_dict[s]+index)%l]
+    return answer

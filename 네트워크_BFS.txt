@@ -1,0 +1,52 @@
+#bfs문제같은데 다른방식으로 풀었음
+#bfs로 다시 풀어보려고함
+from collections import deque
+def solution(n, computers):
+    answer = 0
+    
+    flag = computers 
+    print(flag)
+    print()
+    for i, c in enumerate(flag):
+        
+        do=deque()
+        for j ,c2 in enumerate(flag):
+            if i==j:
+                continue
+            
+            for l in range(n):
+                if (flag[i][l]>=1 and flag[j][l]>=1):
+                    do.append(j)
+                    break
+        for x in do:     
+            for l in range(n):
+                flag[i][l]=flag[i][l]+flag[x][l]
+                flag[x][l]=flag[i][l]
+    for i in range(n):
+        for j in range(n):
+            if flag[i][j]>1:
+                flag[i][j]=1
+    
+    return len(set(tuple(row) for row in flag))
+
+#bfs로 풀어봤음 시간복잡도의 차이가 큼 위는 O(N^3) 아래는 O(N^2)
+from collections import deque
+def solution(n, computers):
+    answer = 0
+    visited=[0 for x in range(n)]
+    def bfs(visited,computers,start):
+        _next_queue=deque()
+        _next_queue.append(start)
+        while _next_queue:
+            _next=_next_queue.pop()
+            if visited[_next]==0:
+                visited[_next]=1
+            for i in range(n):
+                if(computers[_next][i]==1 and visited[i]==0):
+                    _next_queue.append(i)
+    for i in range(n):
+        if(visited[i]==0):
+            bfs(visited,computers,i)
+            answer+=1
+
+    return answer

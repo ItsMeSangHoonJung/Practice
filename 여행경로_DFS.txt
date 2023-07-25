@@ -1,0 +1,38 @@
+#dfs를 이용해서 풀었음 약간 지저분한것이 보임. 문제를 제대로 읽지않아서 시간낭비를 했어음
+result=[]
+def solution(tickets):
+    answers,answer,used=[],[],[]
+    def dfs(s,n,tickets,used):
+        
+        answer.append(n)
+        save=[]
+        for i ,ticket in enumerate(tickets):
+            if i in used:
+                continue
+            if ticket[0]==n:
+                save.append(i)
+        for s in save:
+            used.append(s)
+            dfs(tickets[s][0],tickets[s][1],tickets,used)
+            used.pop(len(used)-1)
+        res=[]        
+        if len(used)==len(tickets):
+            for i in used:
+                res.append(tickets[i][0])
+            res.append(tickets[used[-1]][1])
+            #print(res)
+            #print(used)
+            result.append(res)
+
+         
+    for i,ticket in enumerate(tickets):
+        used.append(i)
+        answer.append(ticket[0])
+        dfs(ticket[0],ticket[1],tickets,used)
+        answer.clear()
+        used.clear()
+    for i,r in enumerate(result):
+        if r[0]!="ICN":
+            result.pop(i)
+    answer = min(result)
+    return answer

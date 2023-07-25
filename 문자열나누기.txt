@@ -1,0 +1,19 @@
+#그냥 구현문제 문제에서 하라는대로 하니까 바로 풀리네
+#음 same,nsame을 그냥 하나의 변수로 표현해서 할수도 있을것같네요
+def solution(s):
+    answer = 0
+    pos=0
+    while pos <len(s):
+        my_char = s[pos]
+        same,nsame=1,0
+        while same!=nsame:
+            pos+=1
+            if pos == len(s):
+                break
+            if s[pos]==my_char:
+                same+=1
+            else:
+                nsame+=1
+        answer+=1
+        pos+=1
+    return answer

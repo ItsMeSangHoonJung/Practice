@@ -1,0 +1,58 @@
+def solution(board, skills):
+    answer = 0
+    """
+    #이렇게하면 O(N*M*K)로 시간복잡도가 너무 높음 따라서 누적합이라는 것을 사용해서 시간복잡도를 낮춰서 푼다고함
+    #Do skills
+    for skill in skills:
+        #Type of skill
+        if skill[0]==1:
+            degree=0-skill[5]
+        else:
+            degree=0+skill[5]
+        #Use skill
+        for i in range(skill[1],skill[3]+1):
+            for j in range(skill[2],skill[4]+1):
+                board[i][j]+=degree
+    #print(board)
+    """
+    #make_new_board
+    M,N=len(board[0]),len(board)
+    
+    new_board=[[0 for x in range(M+1)] for y in range(N+1)]
+    for skill in skills:
+        if skill[0]==1:
+            degree=0-skill[5]
+        else:
+            degree=0+skill[5]
+        new_board[skill[1]][skill[2]]+=degree
+        new_board[skill[3]+1][skill[4]+1]+=degree
+        new_board[skill[1]][skill[4]+1]-=degree
+        new_board[skill[3]+1][skill[2]]-=degree
+        
+    #print(board)
+    #print(new_board)
+    #누적합 https://tech.kakao.com/2022/01/14/2022-kakao-recruitment-round-1/ 여기에 설명되있긴함
+    for i in range(N+1):
+        for j in range(M+1):
+            if i==0:
+                new_board[i][j]=new_board[i][j]
+            else:
+                new_board[i][j]=new_board[i][j]+new_board[i-1][j]
+    for j in range(M+1):
+        for i in range(N+1):
+            if j==0:
+                new_board[i][j]=new_board[i][j]
+            else:
+                new_board[i][j]=new_board[i][j]+new_board[i][j-1]
+    #print(new_board)
+        
+    for i in range(N):
+        for j in range(M):
+            board[i][j]=board[i][j]+new_board[i][j]
+    #Count broken buildings
+    c=0
+    for i in range(len(board)):
+        for j in range(len(board[0])):
+            if board[i][j]>0:
+                c+=1
+    return c

@@ -1,0 +1,109 @@
+#나의 코딩 접근이 틀렸음. 
+def make_word(vert,hori,vert_direction,hori_direction):
+    answer = ''
+    if(vert_direction==-1):
+        answer=answer+'d'*vert
+        if(hori_direction==1):
+            answer=answer+'r'*hori
+        else:
+            answer=answer+"l"*hori
+    else:
+        if(hori_direction==1):
+            answer=answer+'r'*hori
+        else:
+            answer=answer+"l"*hori
+        answer=answer+'u'*vert
+    return answer
+def solution(n, m, x, y, r, c, k):
+    answer = ''
+    vert,hori = abs(x-r),abs(y-c)
+    margin = k-(hori+vert)
+    if (margin%2==1):
+        return "impossible"
+    if (hori + vert >k):
+        return "impossible"
+
+    if x<r :
+        vert_direction=-1
+    else:
+        vert_direction=1
+    if y<c :
+        hori_direction=1
+    else:
+        hori_direction=-1
+    
+    # 순서 : dlru
+    
+    if margin == 0:
+        answer = make_word(vert,hori,vert_direction,hori_direction)
+            
+    else:#margin!=0
+        count=margin//2
+        answer = make_word(vert,hori,vert_direction,hori_direction)
+        flag=0
+        while (count!=0):
+            if(n-r >count and flag == 0):
+                answer= 'd'*count + answer + 'u'*count
+                count=0
+            elif(0<n-r and flag == 0):
+                answer= 'd'*(n-r)+answer + 'u'*(n-r)
+                count=count-(n-r)
+                flag=1
+            else:
+                strings = answer.split('u',1)
+                if (answer.find('u')==-1):
+                    if(c-1>count):
+                        answer=answer+'l'*count+'r'*count
+                        count=0
+                    elif(c-1>0):
+                        answer=answer+'l'*(c-1)+'r'*(c-1)
+                        count=count-(c-1)
+                        answer=answer+"rl"*count
+                        count=0
+                    else:
+                        answer=answer+"rl"*count
+                        count=0
+                else:
+                    if(c-1>count):
+                        
+                        answer=strings[0]+'l'*count+'r'*count+'u'+strings[1]
+                        count=0
+                    elif(c-1>0):
+                        answer=strings[0]+'l'*(c-1)+'r'*(c-1)
+                        count=count-(c-1)
+                        answer=answer+"rl"*count +'u'+strings[1]
+                        count=0
+                    else:
+                        answer=strings[0]+"rl"*count+'u'+strings[1]
+                        count=0
+                    
+                
+                
+        
+    return answer
+
+
+#deque 이거 좋은듯 append,pop,popleft,appendleft 등등 쓸만함
+from collections import deque
+def solution(n, m, x, y, r, c, k):
+    answer = ''
+    q = deque([(x,y,"",0)])
+    dt = [(1,0,'d'),(0,-1,'l'),(0,1,'r'),(-1,0,'u')]
+    # 일단 먼저 r,c 에보내기
+    while q:
+        x,y,path,cnt = q.popleft()
+        if (x,y) == (r,c) and (k - cnt ) % 2 == 1:
+            return "impossible"
+        if (x,y) == (r,c) and cnt == k:
+            return path
+        for i in range(4):
+            dx,dy,direction = dt[i]
+            nx = x + dx
+            ny = y + dy
+            if nx <= 0 or nx > n or ny <= 0 or ny > m: continue
+            if abs(nx - r) + abs(ny - c) + cnt + 1 > k:continue
+            q.append((nx,ny,path + direction,cnt + 1))
+            break
+
+
+    return "impossible"

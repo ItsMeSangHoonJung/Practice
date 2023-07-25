@@ -1,0 +1,53 @@
+import re
+
+def solution(files):
+    a = sorted(files, key=lambda file : int(re.findall('\d{1,5}', file)[0]))
+    b = sorted(a, key=lambda file : re.split('\d+', file.lower())[0])
+    return b
+
+#stable sort가 안되는 것인가.. 왜안되는지 모르겠는데 나름의 테스트케이스들에서 다 통과하지만 
+#채점결과 30점..
+#위의 정규표현식을 사용한 것을 공부하고 이해하자.
+def solution(files):
+    answer = []
+    file_infoes=[]
+    for idx,file in enumerate(files):
+        
+        i=0
+        while(file[i].isalpha() or file[i]=='.' or file[i]==' ' or file[i]=='-'):
+            i+=1
+        Head=file[:i]
+        
+        file=file[i:]
+        
+        for j in range(0,min(len(file),5)):
+            if file[j].isalpha() or file[j]=='.' or file[j]==' ' or file[j]=='-':
+                break
+        else:
+            j=5
+        print(j)    
+        Number=file[0:j]
+        Tail=file[j:]
+        file_infoes.append([idx,Head,Number.zfill(5),Tail])
+        
+    file_infoes=sorted(file_infoes,key=lambda x:x[1].lower())
+
+    """for i in range(len(files)-1):
+        for j in range(i+1,len(files)):
+            if file_infoes[i][1].lower()>file_infoes[j][1].lower():
+                tmp=file_infoes[i]
+                file_infoes[i]=file_infoes[j]
+                file_infoes[j]=tmp"""
+                    
+    for i in range(len(files)):
+        for j in range(i,len(files)):
+            if file_infoes[i][1].lower()==file_infoes[j][1].lower():
+                if file_infoes[i][2]>file_infoes[j][2]:
+                    tmp=file_infoes[i]
+                    file_infoes[i]=file_infoes[j]
+                    file_infoes[j]=tmp
+
+    print(file_infoes)
+    for info in file_infoes:
+        answer.append(files[info[0]])
+    return answer

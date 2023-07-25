@@ -1,0 +1,31 @@
+vdef solution(babbling):
+    answer = 0
+    can_speak=["aya", "ye", "woo", "ma"]
+    for word in babbling:
+        while True:
+            if len(word)==0:
+                answer+=1
+                break
+            if word[0] == 'a' and word[0:3]=="aya":
+                word=word[3:]
+            elif word[0] == 'y' and word[0:2]=="ye":
+                word=word[2:]
+            elif word[0] == 'w' and word[0:3]=="woo":
+                word=word[3:]
+            elif word[0] == 'm' and word[0:2]=="ma":
+                word=word[2:]
+            else:
+                break
+    return answer
+
+#여기서 re라는 정규표현식을 알아버렸는데 공부하면 편할것 같음 
+import re
+
+def solution(babbling):
+    regex = re.compile('^(aya|ye|woo|ma)+$') # 여기서 ^는 시작 $는 끝을 나타냄 관련 링크 : https://velog.io/@aonee/Python-import-re#--match
+    cnt=0
+    for e in babbling:
+        if regex.match(e):
+            cnt+=1
+    return cnt
+

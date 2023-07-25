@@ -1,0 +1,66 @@
+#class를 이용해서 c언어의 구조체처럼 tree제작하는거 이거 꼭 알아야할듯 공부하자
+#preorder,postorder과 같은 개념도 숙지하자.
+import sys
+sys.setrecursionlimit(10**6)
+
+class Tree:
+    def __init__(self):
+        self.parent = None
+        self.left = None
+        self.right = None
+        self.data = None
+        self.index = None
+
+def preOrder(root, vector):
+    if root == None:
+        return vector
+    
+    vector.append(root.index)
+    preOrder(root.left,vector)
+    preOrder(root.right,vector)
+    
+    return vector
+
+def postOrder(root, vector):
+
+    if root == None:
+        return vector
+    postOrder(root.left, vector)
+    postOrder(root.right, vector)
+    vector.append(root.index)
+
+    return vector
+
+
+def solution(nodeinfo):
+    root = None
+    for i in range(len(nodeinfo)):
+        nodeinfo[i].append(i+1)
+    nodeinfo = sorted(nodeinfo, key= lambda x:x[1], reverse=True)
+    
+    for i,node in enumerate(nodeinfo):
+        newTree = Tree()
+        newTree.index = node[2]
+        newTree.data = node
+        if root == None:
+            root = newTree
+        else:
+            curTree = root
+            while 1:
+                if curTree.data[0] < newTree.data[0]: # 오른쪽
+                    if curTree.right == None:
+                        curTree.right = newTree
+                        newTree.parent = curTree
+                        break
+                    else:
+                        curTree = curTree.right
+                else: #왼쪽
+                    if curTree.left == None:
+                        curTree.left = newTree
+                        newTree.parent = curTree
+                        break
+                    else:
+                        curTree = curTree.left
+    
+    answer = [preOrder(root,[]), postOrder(root,[])]
+    return answer

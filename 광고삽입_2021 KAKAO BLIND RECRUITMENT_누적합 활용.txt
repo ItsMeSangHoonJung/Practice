@@ -1,0 +1,82 @@
+def time_to_num(time):
+    h,m,s=time.split(":")
+    return int(h)*3600 + int(m)*60 + int(s)
+def num_to_time(num):
+    
+    if (num//3600<10):
+        h='0'+str(num//3600)
+    else:
+        h=str(num//3600)
+    
+    if ((num%3600)//60<10):
+        m='0'+str((num%3600)//60)
+    else:
+        m=str((num%3600)//60)
+        
+    if (num%60<10):
+        s='0'+str(num%60)
+    else:
+        s=str(num%60)
+        
+    return h+':'+m+':'+s
+
+def solution(play_time, adv_time, logs):
+    play_time,adv_time=time_to_num(play_time),time_to_num(adv_time)
+    my_list=[0 for i in range(play_time+2)]
+    #시청시간 이상 , 미만
+    for log in logs:
+        start,end=map(time_to_num,log.split("-"))
+        my_list[start]+=1
+        my_list[end]-=1
+
+    if(play_time<=adv_time):
+        return "00:00:00"
+        
+    for i in range(1,len(my_list)):
+        my_list[i]+=my_list[i-1]
+    maxt,maxi=0,360001
+    
+    """
+    #new_logs는 시청자들이 (시청시작시간,시청끝시간) 을 저장한 리스트
+    check_time=[]
+    for new_log in new_logs:
+        check_time.append(new_log[0])
+        check_time.append(new_log[1]-adv_time)
+        
+    #check_time=sorted(check_time,reverse=True)
+    #아래 set을 이용해서 중복을 제거하니 점수오름
+    check_time=sorted(list(set(check_time)),reverse=True)
+    
+    for i in check_time:
+        #sum부분이 가장 많은 시간 이거 줄이면 pass될것같음
+        if(i+adv_time>=play_time):
+            s=sum(my_list[i:])
+        else:
+            s=sum(my_list[i:i+adv_time])
+            
+        if maxt<=s:
+            maxt=s
+            maxi=i
+    return num_to_time(maxi)
+    """
+    
+    
+    #위에서 my_list는 그떄 보고있는 사람의 수였는데 그것을 한번더 다 더해주면 누적 시청자의 수가 됨
+    
+    for i in range(1,len(my_list)):
+        my_list[i]+=my_list[i-1]
+
+    
+    #따라서 광고시간중에 누적시청자의 수가 가장 많은 곳을 찾아내기
+    for i in range(adv_time-1,play_time+1):
+        if( i>=adv_time):
+            if maxt<my_list[i]-my_list[i-adv_time]:
+                maxt=my_list[i]-my_list[i-adv_time]
+                maxi=i
+        else:
+            if(maxt<my_list[i]):
+                maxt=my_list[i]
+                maxi=i
+            
+    return num_to_time(maxi-adv_time+1)
+    

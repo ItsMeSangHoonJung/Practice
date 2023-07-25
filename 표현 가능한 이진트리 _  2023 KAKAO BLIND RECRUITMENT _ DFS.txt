@@ -1,0 +1,50 @@
+# 숫자를 2진수로 바꾸고 그 이진수가 완전이진트로리 변경이 가능한지
+# 1-> 리프노드가 더미노드일때 가능
+# 2-> 부모노드가 더미노드라도 아래의 모든 노드들이 더미노드면 가능
+#dfs와 같이 재귀적으로 check를 하였고 math.log2 함수나 bin함수들을 기억하자
+import math
+def check(bn,root,floor):
+    if floor == 0 :
+        return 0
+    if bn[root]=='0':
+        for i in range(root-(2**floor-1),root+(2**floor-1)+1):
+            if bn[i]=='1':
+                return 1
+        else:
+            return 0
+
+    return check(bn,root-2**(floor-1),floor-1) + check(bn,root+2**(floor-1),floor-1)
+def solution(numbers):
+    answer = []
+    for number in numbers:
+        bn=bin(number)[2:]
+        bin_length = len(bn)
+        node_count = 2 ** (int(math.log2(bin_length)) + 1) - 1
+        bn = "0" * (node_count - bin_length) + bn
+        """
+        if 1<len(bn)<=3:
+            bn='0'*(3-len(bn))+bn
+        elif 3<len(bn)<=7:
+            bn='0'*(7-len(bn))+bn
+        elif 7<len(bn)<=15:
+            bn='0'*(15-len(bn))+bn
+        elif 15<len(bn)<=31:
+            bn='0'*(31-len(bn))+bn 
+        elif 31<len(bn)<=63:
+            bn='0'*(63-len(bn))+bn
+        elif 63<len(bn)<=127:
+            bn='0'*(127-len(bn))+bn
+        elif 127<len(bn)<=255:
+            bn='0'*(255-len(bn))+bn
+        """
+        root = node_count//2
+        floor =int(math.log2(root+1)) 
+        if bn[root]=='0':
+            answer.append(0)
+        else:
+            if check(bn,root,floor):
+                answer.append(0)
+            else:
+                answer.append(1)
+
+    return answer

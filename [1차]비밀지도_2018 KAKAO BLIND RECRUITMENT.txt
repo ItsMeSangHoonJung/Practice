@@ -1,0 +1,38 @@
+#그냥 이진수로 바꿔서 구현하는 구현문제 쉬웠음
+def solution(n, arr1, arr2):
+    answer = []
+    _map=[]
+    for i in range(n):
+        _map.append([arr1[i],arr2[i]])
+    for i,[a,b] in enumerate(_map):
+        a1,a2=bin(a)[2:],bin(b)[2:]
+        if len(a1)<n:
+            a1='0'*(n-len(a1))+a1
+        if len(a2)<n:
+            a2='0'*(n-len(a2))+a2
+        a1=a1.replace('0',' ')
+        a1=a1.replace('1','#')
+        a2=a2.replace('0',' ')
+        a2=a2.replace('1','#')
+        _map[i]=[a1,a2]
+        res=""
+        for j in range(n):
+            if '#' == a1[j] or a2[j] == '#':
+                res+='#'
+            else:
+                res+=' '
+        answer.append(res)
+    #print(_map)
+    return answer
+#위에처럼 구현한것을 비트연산자와 rjust를 사용해서 간단하고 짧게 풀었음
+#rjust는 값을 오른쪽에 정렬하고 n자리가 되게 왼쪽을 채워넣는것
+#ljust는 값을 왼쪽에 정렬하고 오른쪽에 채워넣는것이고 비슷한것으로 zfill도 있음	zfill은 0을 왼쪽에 채워주는 역할
+def solution(n, arr1, arr2):
+    answer = []
+    for i,j in zip(arr1,arr2):
+        a12 = str(bin(i|j)[2:])
+        a12=a12.rjust(n,'0')
+        a12=a12.replace('1','#')
+        a12=a12.replace('0',' ')
+        answer.append(a12)
+    return answer

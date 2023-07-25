@@ -1,0 +1,19 @@
+개인정보 수집 유효기간_2023 KAKAO BLIND RECRUITMENT_Lv1
+
+map split enumerate
+
+택배 배달과 수거하기_2023 KAKAO BLIND RECRUITMENT_Lv2
+
+stack 에서 .pop() max()
+
+이모티콘 할인행사_2023 KAKAO BLIND RECRUITMENT_Lv2
+
+itertools의 product로 모든 경우의수를 생성하는 것 permutations를 통해서 순열 combinations를 통해서 조합도 가능
+
+미로탈출명령어_2023 KAKAO BLIND RECRUITMENT_Lv3
+
+deque를 통해서 append,pop,popleft,appendleft등 좋은 듯 쓸수있게 공부!
+
+성격 유형 검사하기_2022 KAKAO TECH INTERNSHIP
+
+비교적 쉬운문제였지만 dict = {} 를 통해서 깔끔한 정리가 인상적 또한 A=A[::-1]를 통해서 뒤집는 것도 인상적

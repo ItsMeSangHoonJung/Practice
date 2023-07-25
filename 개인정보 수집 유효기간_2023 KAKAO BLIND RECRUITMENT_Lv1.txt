@@ -1,0 +1,49 @@
+#include <stdio.h>
+#include <stdbool.h>
+#include <stdlib.h>
+#include <string.h>
+
+int* solution(const char* today, const char* terms[], size_t terms_len, const char* privacies[], size_t privacies_len) {
+    int* answer = (int*)malloc(privacies_len * sizeof(int)), i, idx = 0;
+    int Y = atoi(strtok(today, ".")), M = atoi(strtok(NULL, ".")), D = atoi(strtok(NULL, ".")), y, m, d;
+    int CUR = (Y * 12 + M) * 28 + D, PRI;
+    int TERMS[128] = { 0 }, a, b;
+    for(i = 0; i < terms_len; i++) {
+        a = strtok(terms[i], " ")[0];
+        b = atol(strtok(NULL, " "));
+        TERMS[a] = b;
+    }
+    for(i = 0; i < privacies_len; i++) {
+        y = atoi(strtok(privacies[i], "."));
+        m = atoi(strtok(NULL, "."));
+        d = atoi(strtok(NULL, " "));
+        a = strtok(NULL, " ")[0];
+        PRI = (y * 12 + m + TERMS[a]) * 28 + d;
+        if(CUR >= PRI) answer[idx++] = i + 1;
+    }
+    answer = (int*)realloc(answer, idx * sizeof(int));
+    return answer;
+}
+
+def datetoint_v1(date):
+    Y,M,D=date.split(".")
+    Y=int(Y)
+    M=int(M)
+    D=int(D)
+    return Y*12*28+M*28+D
+
+def datetoint_v2(date):
+    Y,M,D=map(int,date.split("."))
+    return Y*12*28+M*28+D
+
+def solution(today, terms, privacies):
+    today=datetoint_v2(today)
+    type = {v[0] : int(v[2:])*28 for v in terms}
+   
+    answer = [
+        i+1 for i,p in enumerate(privacies)
+        if datetoint(p[:-2])+type[p[-1]] <= today
+    ]
+    return answer
+
+

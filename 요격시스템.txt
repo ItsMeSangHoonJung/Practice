@@ -1,0 +1,25 @@
+#정렬 이후에 그리디하게 풀었음 
+def solution(targets):
+    answer = 0
+    #sorted_targets=sorted(targets,key = lambda x:x[0])
+    sorted_targets=sorted(targets)#어차피 기본값이 첫번째 요소로 정렬 이후 두번쨰 요소로 정렬
+    #print(sorted_targets)
+    #print(sorted_targets[0][0])
+    l=len(targets)
+    n=0
+    
+    i=0
+    while(i<l):
+        s,e=sorted_targets[i][0],sorted_targets[i][1]
+        j=i+1
+        while(j<l):
+            if sorted_targets[j][0]>=e:
+                answer+=1
+                i=j+1
+                break
+            s=max(s,sorted_targets[j][0])
+            e=min(e,sorted_targets[j][1])
+            j+=1
+        i=j
+            
+    return answer+1

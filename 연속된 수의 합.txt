@@ -1,0 +1,9 @@
+그냥 수학문제임
+def solution(num, total):
+    answer = []
+
+    x=((total /(num/2)) -num -1)/2
+    
+    for i in range(num):
+        answer.append(x+1+i)
+    return answer

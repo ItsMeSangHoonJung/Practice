@@ -1,0 +1,20 @@
+#수학문제
+def solution(numer1, denom1, numer2, denom2):
+    numer,denom=(numer1*denom2 +numer2*denom1),(denom1*denom2)
+    for i in range(2,1000):
+        if abs(numer)%i==0 and abs(denom)%i==0:
+            numer//=i
+            denom//=i
+    if(numer%denom)==0:
+        return(numer//denom,1)
+    elif(denom%numer==0):
+        return(1,denom//numer)
+    else:
+        return(numer,denom)
+
+#import math 해서 
+#math.gcd로 최대공약수 구해서 문제풀거나
+#from fractions import Fraction 해서
+#그냥 모듈로 풀기도 하더라
+#Fraction(denum1,num1) + Fraction(denum2,num2) 하면 자동으로 풀어지네
+ 

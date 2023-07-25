@@ -1,0 +1,66 @@
+#아래코드는 화살당 점수의 효율로 문제를 계산해 풀었는데 반례가 있음
+#n = 3 ,info = [0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0] 화살의 효율로 계산해 9점에 쏴서 8점에 2발 쏘지 못하는 경우
+#<정답>
+#[1, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0] (score_delta=7)
+
+#<오답>
+#[1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0] (score_delta=6)
+def solution(n, info):
+    answer = [0]*len(info)
+    info=info[::-1]
+    apeach=0
+    for i in range(len(info)):
+        if(info[i]!=0):
+            apeach+=i
+            
+    print(apeach)
+    rion_info={}
+    for i in range(len(info)):
+        if (info[i]!=0):
+            rion_info[i]=(info[i]+1,i*2)
+        else:
+            rion_info[i]=(1,i)
+    print(rion_info)
+    rion=0
+    while (n!=0):
+        max=0
+        tmp=0
+        for i in range(len(info)):
+            if(max<rion_info[i][1]/rion_info[i][0] and rion_info[i][0]<=n):
+                tmp=i
+                max=rion_info[i][1]/rion_info[i][0]
+        if(max!=0):
+            n-=rion_info[tmp][0]
+            rion+=rion_info[tmp][1]
+            answer[tmp]=rion_info[tmp][0]
+            rion_info[tmp]=(9999,0)
+        else:
+            n-=1
+            answer[0]+=1
+    
+    if(rion>apeach):
+        answer=answer[::-1]
+        return answer
+    else:
+        return [-1]
+
+#그래서 product()를 통해서 모든 조합을 계산해보도록함
+from itertools import product
+def solution(n, info):
+    info.reverse()
+    ans = [-1]
+    maxd = 0
+    for wl in product((True, False), repeat=11):
+        t = 0
+        s = sum(info[i]+1 for i in range(11) if wl[i]) #s는 Ryan이 쏜 화살의 갯수
+        if s <= n: #Ryan이 n개보다 적은 화살로 Apeach를 이겼을때
+            apeach = sum(i for i in range(11) if not wl[i] and info[i]) ## Ryan Lose (=Apeach Win) and Shooted
+            ryan = sum(i for i in range(11) if wl[i]) ## Ryan - Win
+            d = ryan-apeach #점수의 차이
+            if d > maxd: #가장 점수차이가 큰것 찾기
+                maxd = d
+                ans = [info[i]+1 if wl[i] else 0 for i in range(11)] #Ryan이 쏜 화살의 갯수 정리
+                ans[0] += n-s # 가장 점수가 낮은 곳에 많이쏜 경우의수를 원함
+    #모든 경우의 수를 다함. 화살의 갯수도 10개 이하이고 info의 길이도 11로 고정되어있어서 모든 경우의 수를 계산해도 시간이 적게걸림
+    ans.reverse()
+    return ans

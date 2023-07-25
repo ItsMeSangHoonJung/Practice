@@ -1,0 +1,84 @@
+#표준정규식을 통해서 숫자는 찾았는데 숫자가 아닌것을 못찾았음
+#아래와 같이 [^0-9]로 하니까 찾아지더라
+#표준정규식 어느정도 알면 도움될것같음
+import re
+def solution(dartResult):
+    answer = 0
+    num = (re.findall('[0-9]+',dartResult))
+    
+    #oper = re.findall('[^0-9]+',dartResult)
+    print(num,oper)
+    s=dartResult.replace("1","")
+    s=s.replace("2","")
+    s=s.replace("3","")
+    s=s.replace("4","")
+    s=s.replace("5","")
+    s=s.replace("6","")
+    s=s.replace("7","")
+    s=s.replace("8","")
+    s=s.replace("9","")
+    s=s.replace("0","")
+    #print(num)
+    #print(s)
+    s=s+'    '
+    numi=0
+    si=0
+    for i in range(3):
+        num[i]=int(num[i])
+    
+    for i in range(3):
+        #print(numi,si,num[numi],s[si])
+        if s[si] == "S":
+            num[numi]=num[numi]**1
+            if s[si+1]=="*":
+                if(numi == 0):
+                    num[numi]=num[numi]*2
+                else:
+                    num[numi-1]=num[numi-1]*2
+                    num[numi]=num[numi]*2
+                si+=2
+            elif(s[si+1]=='#'):
+                num[numi]=num[numi]*-1
+                si+=2
+            elif(s[si+i]==' '):
+                break
+            else:
+                si+=1
+                
+        elif s[si] == "D":
+            num[numi]=num[numi]**2
+            if s[si+1]=="*":
+                if(numi == 0):
+                    num[numi]=num[numi]*2
+                else:
+                    num[numi-1]=num[numi-1]*2
+                    num[numi]=num[numi]*2
+                si+=2
+            elif(s[si+1]=='#'):
+                num[numi]=num[numi]*-1
+                si+=2
+            elif(s[si+i]==' '):
+                break
+            else:
+                si+=1
+                
+        elif s[si] == "T":
+            num[numi]=num[numi]**3
+            if s[si+1]=="*":
+                if(numi == 0):
+                    num[numi]=num[numi]*2
+                else:
+                    num[numi-1]=num[numi-1]*2
+                    num[numi]=num[numi]*2
+                si+=2
+            elif(s[si+1]=='#'):
+                num[numi]=num[numi]*-1
+                si+=2
+            elif(s[si+i]==' '):
+                break
+            else:
+                si+=1
+        #print(num[numi])
+        numi+=1
+    #print(num)
+    answer = sum(num)

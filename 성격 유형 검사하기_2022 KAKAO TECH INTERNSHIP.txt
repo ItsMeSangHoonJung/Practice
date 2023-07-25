@@ -1,0 +1,60 @@
+#내 풀이는 if문을 내가 직접 해버림 -> 자동화하는게 더 깔끔하다고 생각 -> dict를 사용함
+def solution(survey, choices):
+    answer = ''
+    #RT CF JM AN
+    score = [0,0,0,0]
+    for surv,choice in zip(survey,choices):
+        if (surv == "RT" ):
+            score[0]+=choice-4
+        elif(surv =="TR" ):
+            score[0]+=4-choice
+        elif(surv =="CF" ):
+            score[1]+=choice-4
+        elif(surv =="FC" ):
+            score[1]+=4-choice
+        elif(surv =="JM" ):
+            score[2]+=choice-4
+        elif(surv =="MJ" ):
+            score[2]+=4-choice
+        elif(surv =="AN" ):
+            score[3]+=choice-4
+        elif(surv =="NA" ):
+            score[3]+=4-choice
+            
+    type=[('R','T'),('C','F'),('J','M'),('A','N')] 
+    for i,(l,r) in zip(score,type):
+        if i>0 :
+            answer+=r
+        elif(i<0):
+            answer+=l
+        else:
+            if(r<l):
+                answer+=r
+            else:
+                answer+=l
+           
+            
+    return answer
+
+#dict={} 를 통해서 깔끔하게 표현
+def solution(survey, choices):
+
+    my_dict = {"RT":0,"CF":0,"JM":0,"AN":0}
+    for A,B in zip(survey,choices):
+        if A not in my_dict.keys():
+	    #지표가 TR과 같은경우일때 [::-1]로 뒤집어줌
+            A = A[::-1]
+            my_dict[A] -= B-4
+        else:
+            my_dict[A] += B-4
+
+    result = ""
+    for name in my_dict.keys():
+        if my_dict[name] > 0:
+            result += name[1]
+        elif my_dict[name] < 0:
+            result += name[0]
+        else:
+            result += sorted(name)[0] #sorted(name) 을 통해서 사전순으로 정렬
+
+    return result

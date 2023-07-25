@@ -1,0 +1,40 @@
+#좀 쉽게 풀었음 dict를 전부다 사용하려 했는데 그냥 not in my_dict로 조금더 깔끔하게 풀수 있었을것 같음 
+#아래의 깔끔한코드처럼 코딩할수있게 노력해보자
+def solution(keymap, targets):
+    answer = []
+    my_dict={}
+    for char in ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"]:
+        my_dict[char]=101
+    for keym in keymap:
+        for char in ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"]:
+            if char in keym:
+                if my_dict[char]>keym.index(char):
+                    my_dict[char]=keym.index(char)+1
+    for target in targets:
+        chk=0
+        for char in target:
+            if my_dict[char]==101:
+                chk=-1
+                break
+            chk=chk+my_dict[char]
+        
+        answer.append(chk)
+    return answer
+
+def solution(keymap, targets):
+    answer = []
+    hs = {}
+    for k in keymap:
+        for i, ch in enumerate(k):
+            hs[ch] = min(i + 1, hs[ch]) if ch in hs else i + 1
+
+    for i, t in enumerate(targets):
+        ret = 0
+        for ch in t:
+            if ch not in hs:
+                ret = - 1
+                break
+            ret += hs[ch]
+        answer.append(ret)
+
+    return answer

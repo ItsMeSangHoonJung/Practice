@@ -1,0 +1,43 @@
+#처음에 map을 edge가 아닌 정점들로 표현했는데 회전구간에서 회전하지 않는 경우가 발생
+#그래서 정점대신 2-3 을 2.5로 표현하는 edge로 구현
+#마지막의 bfs를 이해할수있도록 하자
+from collections import deque 
+def solution(rectangle, characterX, characterY, itemX, itemY):
+    answer = 0
+    
+    #road에 사각형의 모든 edge를 저장
+    road=[]
+    for rec in rectangle:
+        for i in range(rec[0],rec[2]):
+            road.append(((i+0.5),rec[1]))
+            road.append(((i+0.5),rec[3]))
+        for i in range(rec[1],rec[3]):
+            road.append((rec[0],(i+0.5)))
+            road.append((rec[2],(i+0.5)))
+    #list를 set으로 바꿔 중복제거
+    road=set(road)
+    edge = set()
+    #for문에서 break로 빠져나오는 것이 아니면 else를 실행하는 for문에 else사용함 
+    #사각형 안에있는 edge들을 모두 제거한 이후에 edge에 저장
+    for r in road:
+        for rec in rectangle:
+            if(rec[0]<r[0]<rec[2] and rec[1]<r[1]<rec[3]):
+                break
+        else:
+            edge.update([(r[0],r[1])])
+    edge = sorted(edge)
+    print(edge)
+    #bfs를 통해서 최단거리를 구함
+    que,dy,dx = deque([(0, characterY, characterX)]), [.5,0,-.5,0], [0,.5,0,-.5]
+    
+    while que:
+        (cnt,y,x)=que.popleft()
+        if y==itemY and x==itemX:
+            return cnt
+        for i in range(4):
+            if ((x+dx[i]),(y+dy[i])) in edge:
+		#지나간 edge는 제거하고 다음위치를 que에 저장하면서 bfs탐색
+                edge.remove(((x+dx[i]),(y+dy[i])))
+                que.append((cnt+1,y+dy[i]*2,x+dx[i]*2))
+                
+    return answer

@@ -1,0 +1,26 @@
+#num을 n진수로 바꿔서 문자로 return
+def ll(num,n):
+    if num == 0:
+        return "0"
+    res=""
+    a="0123456789ABCDEF"
+    my_dict={}
+    for i in range(0,16):
+        my_dict[i]=a[i]
+    while num !=0:
+        res=my_dict[num%n]+res
+        num=num//n
+    return res
+
+def solution(n, t, m, p):
+    answer,word,num = '' ,'',0
+    while(len(word)< m*t ):
+        word=word+ll(num,n)
+        num+=1
+    word=word[:m*t]
+    #아래의 for문을 이렇게 쉽게 할수있더라
+    #return word[p-1::m]
+    for i,w in enumerate(word):
+        if i % m == p-1:
+            answer+=w
+    return answer

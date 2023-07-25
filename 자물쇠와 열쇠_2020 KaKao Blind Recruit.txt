@@ -1,0 +1,60 @@
+#어렵네요 list를 3배해서 푸는 아이디어 찾는게 힘들것같음
+#완전 빡구현 문제
+#for문 쓸때 i,j같은거 겹쳐서 잘못써서 답이 안나올수있음 조심
+from collections import Counter
+import numpy as np
+def rotate(key):
+    newkey=[[0 for x in range(len(key))] for y in range(len(key))]
+    for i in range(len(key)):
+        for j in range(len(key)):
+            newkey[i][j]=key[len(key)-1-j][i]
+    return newkey
+def make_new_lock(l,lock):
+    new_lock=[[0 for x in range(l*3)] for y in range(l*3)]
+    for i in range(l,l*2):
+        for j in range(l,l*2):
+            new_lock[i][j]=lock[i-l][j-l]
+    return new_lock
+def solution(key, lock):
+    answer = True
+    
+    if Counter(str(lock))['0']>Counter(str(key))['1']: # key의 돌기 갯수보다 lock의 홈의 갯수가 많으면 잠금해제 불가능
+        return False
+    
+    keys=[]
+    keys.append(key)
+
+    for i in range(3):
+        keys.append(rotate(keys[i]))
+    """for i in range(4):
+        print(keys[i])"""
+    #lock3배 크기의 새로운 배열 생성
+    l,kl=len(lock),len(key)   
+    new_lock=make_new_lock(l,lock)
+    
+    for k in keys:
+        
+        for i in range(l-kl+1,2*l):
+            for j in range(l-kl+1,2*l):  #i,j 는 key[0][0]이 더해질 new_lock의 좌표
+                
+                for x in range(kl): #x,y는 key의 index값
+                    for y in range(kl):
+                        new_lock[i+x][j+y]=new_lock[i+x][j+y]+k[x][y]
+                
+                """for i in range(l*3):
+                    print(new_lock[i])
+                print()"""
+                for a in range(l,2*l):
+                    for b in range(l,2*l):
+                        if new_lock[a][b] == 1:
+                            continue
+                        else:
+                            break
+                    else:
+                        continue
+                    break
+                else:
+                    return True
+                new_lock=make_new_lock(l,lock)
+
+    return False

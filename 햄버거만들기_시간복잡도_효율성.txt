@@ -1,0 +1,31 @@
+def solution(ingredient):
+    answer = 0
+    pos=0
+    flag=0
+    ingredient_length=len(ingredient)
+    
+    while pos <= ingredient_length-4 :
+        if(ingredient[pos:pos+4]==[1,2,3,1]):
+            answer+=1
+            for i in range(4):
+                ingredient.pop(pos)
+            pos=pos-4
+            ingredient_length-=4
+            continue
+        pos+=1
+        
+    return answer
+
+#아래의 방법으로 하면 시간 복잡도가 상당히 낮고 효율성이 높음 내가짠 위의 코드는 엄청 긴 ingredient를 슬라이싱 하면서 검색을 하고 
+#pop해서 시간이 오래 걸림 (여기서 pos=pos-4로 효율성을 조금 높여 겨우 테스트 통과함) 하지만 아래처럼
+#ingredient하나씩 받아오면서 1231이 있으면 pop하면서 수행해서 시간복잡도가 낮아보임
+def solution(ingredient):
+    s = []
+    cnt = 0
+    for i in ingredient:
+        s.append(i)
+        if s[-4:] == [1, 2, 3, 1]:
+            cnt += 1
+            for i in range(4):
+                s.pop()
+    return cnt

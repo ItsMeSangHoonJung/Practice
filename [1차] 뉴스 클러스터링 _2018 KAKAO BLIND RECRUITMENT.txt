@@ -1,0 +1,30 @@
+#다시풀어도 틀릴것 같음 isalpha 같은 메소드 기억하기
+# 다중집합? ;;;
+def solution(str1, str2):
+    answer = 0
+    str1=str1.upper()
+    str2=str2.upper()
+    
+    """banlist=[" ","!","@","#","$","%","^","&","*","(",")","-","+","=","/",".",",","?","<",">",";",":","1","2","3","4","5","6","7","8","9","0","`","~","'","[","]"] #isalpha() 로 알파벳인지 확인 가능 이렇게하니까 testcase fail뜨네"""
+    set1,set2=[],[]
+    for i in range(0,len(str1)-1,1):
+        #if str1[i] not in banlist and str1[i+1] not in banlist:
+        set1.append(str1[i:i+2])
+    for i in range(0,len(str2)-1,1):
+        #if str2[i] not in banlist and str2[i+1] not in banlist:
+        set2.append(str2[i:i+2])
+    tmp = [i for i in set1 if i.isalpha()]
+    set1 = tmp.copy()
+    tmp = [i for i in set2 if i.isalpha()]
+    set2 = tmp.copy()
+    
+    intersect = []
+    tmp=set2.copy()
+    for i in set1:
+        if i in tmp:
+            tmp.remove(i)
+            intersect.append(i)
+
+    if (len(set1)+len(set2)-len(intersect))==0:
+        return 65536
+    return int((len(intersect)/(len(set1)+len(set2)-len(intersect)))*65536)

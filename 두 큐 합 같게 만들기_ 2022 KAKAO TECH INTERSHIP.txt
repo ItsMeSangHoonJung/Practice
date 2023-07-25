@@ -1,0 +1,77 @@
+#위의 코드는 while문 하나로 element하나하나 비교하며 계산하는 방식이고
+#아래코드는 중첩while문으로 배치계산하듯이계산했다.
+#while문이 많으면 시간복잡도가 오른다는 편견으로 인해서 더 좋은 방식을 사용하지 못함. if문으로 하나하나하는거보다 while문으로 한번에 하는게 시간적으로 유리
+
+
+from collections import deque
+def solution(queue1, queue2):
+    answer=0
+    total = sum(queue1)+sum(queue2)
+    sumQ1,sumQ2=sum(queue1),sum(queue2)
+    lenQ1,lenQ2=len(queue1),len(queue2)
+    Q1,Q2 = deque(queue1),deque(queue2)
+    if((sumQ1+sumQ2)%2==1):
+        return -1
+    for element in Q1:
+        if(element>total/2):
+            return -1
+    for element in Q2:
+        if(element>total/2):
+            return -1
+        
+    while sumQ1!=sumQ2:
+        if(sumQ1<sumQ2):
+            element=Q2.popleft()
+            Q1.append(element)
+            sumQ1+=element
+            sumQ2-=element
+            answer+=1
+        elif(sumQ1>sumQ2):
+            element=Q1.popleft()
+            Q2.append(element)
+            sumQ1-=element
+            sumQ2+=element
+            answer+=1
+        elif(answer>(lenQ1+lenQ2)):
+            return -1
+        else:
+            returm -1
+    return answer
+
+
+
+from collections import deque
+def solution(queue1, queue2):
+    answer=0
+    total = sum(queue1)+sum(queue2)
+    sumQ1,sumQ2=sum(queue1),sum(queue2)
+    lenQ1,lenQ2=len(queue1),len(queue2)
+    Q1,Q2 = deque(queue1),deque(queue2)
+    if((sumQ1+sumQ2)%2==1):
+        return -1
+    for element in Q1:
+        if(element>total/2):
+            return -1
+    for element in Q2:
+        if(element>total/2):
+            return -1
+        
+    while sumQ1!=sumQ2:
+        while(Q1 and sumQ1<sumQ2):
+            element=Q2.popleft()
+            Q1.append(element)
+            sumQ1+=element
+            sumQ2-=element
+            answer+=1
+            
+        while(Q2 and sumQ1>sumQ2):
+            element=Q1.popleft()
+            Q2.append(element)
+            sumQ1-=element
+            sumQ2+=element
+            answer+=1
+            
+        if(answer>(lenQ1+lenQ2)*2):
+            return -1
+       
+    return answer

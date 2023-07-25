@@ -1,0 +1,23 @@
+def solution(record):
+    answer = []
+    dict={}
+    for r in record:
+        if r[0:5]=="Leave":
+            continue
+            
+        _type,_id,_nickname=r.split(" ")
+        dict[_id]=_nickname
+    
+    dict["Enter"]="들어왔습니다."
+    dict["Leave"]="나갔습니다."
+    #print(dict)
+    for r in record:
+        if r[0:5]=="Leave":
+            _type,_id=r.split(" ")
+        else:
+            _type,_id,_nickname=r.split(" ")
+        if _type == "Change":
+            continue
+        answer.append(dict[_id]+"님이 "+dict[_type])
+        
+    return answer

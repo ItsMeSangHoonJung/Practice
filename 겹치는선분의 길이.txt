@@ -1,0 +1,43 @@
+#문제 코딩하기전에 테스트케이스보면서 문제이해부터 하는게 시간절약에 도움될듯
+def solution(lines):
+    answer = 0
+    
+    sorted_lines = sorted(lines,key = lambda x:x[0])
+    
+    go = [(0,1),(1,2),(0,2)]
+    print(go)
+    print(sorted_lines)
+    flag={a:0 for a in range(-100,101,1)}
+    
+    """
+    #ㅋㅋ문제가 그냥 선분두개가 겹치는 길이의 합이 아니고 두개 이상의 선분이 겹치는 부분의 길이를 구하래
+    for (i,j) in go:
+        print(answer)
+        if(sorted_lines[i][1]<=sorted_lines[j][0]):
+            answer=answer
+        elif(sorted_lines[i][1]>=sorted_lines[j][1]):
+            answer+=(sorted_lines[j][1]-sorted_lines[j][0])
+        else:
+            answer+=(sorted_lines[i][1]-sorted_lines[j][0])
+        print (answer)
+    """
+    
+    for (i,j) in go:
+        
+        if(sorted_lines[i][1]<=sorted_lines[j][0]):
+            continue
+        elif(sorted_lines[i][1]>=sorted_lines[j][1]):
+            for i in range(sorted_lines[j][0],sorted_lines[j][1]):
+                flag[i]+=1
+        else:
+            for i in range(sorted_lines[j][0],sorted_lines[i][1]):
+                flag[i]+=1
+    for i in range(-100,100):
+        if flag[i]!=0:
+            answer+=1
+    for i in range(-3,11):
+        print(i,":",flag[i])
+       
+           
+                
+    return answer

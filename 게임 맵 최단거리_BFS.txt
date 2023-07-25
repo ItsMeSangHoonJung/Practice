@@ -1,0 +1,87 @@
+#뭔가 안되네여
+direction = {0:(-1,0),1:(0,1),2:(1,0),3:(0,-1)}
+def dfs(n,m,posx,posy,maps,step,d):
+    if (n,m)==(posx,posy):
+        return step
+    elif maps[posx][posy]==0:
+        return 9999
+    else:
+        new_maps= maps
+        new_maps[posx][posy]=0
+        
+    return min(dfs(n,m,posx+direction[d][0],posy+direction[d][1],new_maps,step+1,0)
+        ,dfs(n,m,posx+direction[d][0],posy+direction[d][1],new_maps,step+1,1)
+        ,dfs(n,m,posx+direction[d][0],posy+direction[d][1],new_maps,step+1,2)
+        ,dfs(n,m,posx+direction[d][0],posy+direction[d][1],new_maps,step+1,3))
+def solution(maps):
+    answer = 0
+    global direction
+    n,m=len(maps),len(maps[0])
+    new_map = [[0 for j in range(m+2)] for i in range(n+2) ] 
+    for i in range(n):
+        for j in range(m):
+            new_map[i+1][j+1]=maps[i][j]
+    answer = min(dfs(n,m,1,1,new_map,0,0),dfs(n,m,1,1,new_map,0,1),dfs(n,m,1,1,new_map,0,2),dfs(n,m,1,1,new_map,0,3))
+    if answer == 9999:
+        answer = -1
+    
+    return answer
+#아래는 bfs답안 보고 다시 짜본건데 확실이 어려움 공부 필요
+from collections import deque  
+def solution(maps):
+    answer = 0
+    direction = {0:(-1,0),1:(0,1),2:(1,0),3:(0,-1)}    
+    n=len(maps)
+    m=len(maps[0])
+    def bfs(x,y):
+        q=deque()
+        q.append((x,y))
+        while q:
+            x,y= q.popleft()
+            for x in range(4):
+                nx=x+direction[x][0]
+                ny=y+direction[y][1]
+            
+                if( not (0<=nx<n and 0<=ny<m)):
+                    continue
+                if(maps[nx][ny]==0):
+                    continue
+                if(maps[nx][ny]==1):
+                    maps[nx][ny]=maps[x][y]+1
+                    q.append((nx,ny))
+        return map[n-1][m-1]
+    answer = bfs(0,0)
+    if answer == 1:
+        return -1
+    else:
+        return answer
+
+from collections import deque  
+def solution(maps):
+    answer = 0
+    direction = {0:(-1,0),1:(0,1),2:(1,0),3:(0,-1)}    
+    n=len(maps)
+    m=len(maps[0])
+    def bfs(x,y):
+        q=deque()
+        q.append((x,y))
+        while q:
+            x,y= q.popleft()
+            for i in range(4):
+                nx=x+direction[i][0]
+                ny=y+direction[i][1]
+                
+                if( not (0<=nx<n and 0<=ny<m)):
+                    continue
+                if(maps[nx][ny]==0):
+                    continue
+                if(maps[nx][ny]==1):
+                    maps[nx][ny]=maps[x][y]+1
+                    q.append((nx,ny))
+        return maps[n-1][m-1]
+    
+    answer = bfs(0,0)
+    if answer == 1:
+        return -1
+    else:
+        return answer

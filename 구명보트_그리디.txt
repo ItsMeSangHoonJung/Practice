@@ -1,0 +1,21 @@
+def solution(people, limit):
+    answer = 0
+    people=sorted(people)
+    l=len(people)
+    #big과 small의 index를 사용해서 pop과 같이 시간복잡도가 높은 메소드를 사용안하면서 효울적!
+    big,small=1,0
+    while(big+small<=l):
+        thisboat=0
+        
+        #무거운사람 먼저 태우고
+        while big+small<=l and thisboat+people[-big]<=limit:
+            thisboat+=people[-big]
+            big+=1
+        #남는자리에 가벼운 사람들 태우기
+        while big+small <=l and thisboat+people[small]<=limit:
+            thisboat+=people[small]
+            small+=1
+            
+        answer+=1
+        
+    return answer

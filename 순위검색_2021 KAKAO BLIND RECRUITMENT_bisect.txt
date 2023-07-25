@@ -1,0 +1,113 @@
+def solution(infos, queries):
+    answer = [0 for i in range(len(queries))]
+    for info in infos:
+        (language, end, ior, food, score) = info.split(" ")
+        score=int(score)
+        for n,query in enumerate(queries):
+            (l,e,i,f_s) = query.split("and")
+            l,e,i=l.strip(),e.strip(),i.strip()
+            f,s=f_s.strip().split(" ")
+            s=int(s)
+
+            if((l=='-' or l==language) and (e=='-' or e==end) and (i=='-' or i==ior) and (f=='-' or f==food) and (s<=score) ):
+                answer[n]+=1
+                
+    return answer
+
+from itertools import product 
+def solution(infos, queries):
+    answer = [0 for i in range(len(queries))]
+    
+    my_info={}
+    item=[["cpp","java","python","-"],["backend","frontend","-"],["junior","senior","-"],["chicken","pizza","-"]]
+    combinations = list(product(item[0], item[1], item[2], item[3]))
+         
+    for combination in combinations:
+        key = combination[0]+combination[1]+combination[2]+combination[3]
+        my_info[key]=[0]
+        
+    for info in infos:
+        l,e,i,f,s = info.split(" ")
+        my_info[l+e+i+f].append(int(s))
+        my_info['-'+e+i+f].append(int(s))
+        my_info[l+'-'+i+f].append(int(s))
+        my_info[l+e+'-'+f].append(int(s))
+        my_info[l+e+i+'-'].append(int(s))
+        my_info['-'+'-'+i+f].append(int(s))
+        my_info['-'+e+'-'+f].append(int(s))
+        my_info['-'+e+i+'-'].append(int(s))
+        my_info[l+'-'+'-'+f].append(int(s))
+        my_info[l+'-'+i+'-'].append(int(s))
+        my_info[l+e+'-'+'-'].append(int(s))
+        my_info['-'+'-'+'-'+f].append(int(s))
+        my_info['-'+'-'+i+'-'].append(int(s))
+        my_info['-'+e+'-'+'-'].append(int(s))
+        my_info[l+'-'+'-'+'-'].append(int(s))
+        my_info['-'+'-'+'-'+'-'].append(int(s))
+        
+    
+    for combination in combinations:
+        key = combination[0]+combination[1]+combination[2]+combination[3]
+        my_info[key].sort()
+    
+    for querynum,query in enumerate(queries):
+        l,e,i,f = query.split(" and ")
+        f,s=f.split(" ")
+        for j,score in enumerate(my_info[l+e+i+f]):
+            flag=0
+
+            if score>=int(s):
+                answer[querynum]=len(my_info[l+e+i+f])-j
+                break
+           
+    return answer
+
+## bisect 함수와 defaultdict를 알아가야할듯 이거 알면 정말 좋을것같다.
+from itertools import product 
+from collections import defaultdict
+from bisect import bisect_left
+def solution(infos, queries):
+    #answer = [0 for i in range(len(queries))]
+    
+    my_info={}
+    
+    item=[["cpp","java","python","-"],["backend","frontend","-"],["junior","senior","-"],["chicken","pizza","-"]]
+    combinations = list(product(item[0], item[1], item[2], item[3]))
+    for combination in combinations:
+        key = combination[0]+combination[1]+combination[2]+combination[3]
+        my_info[key]=[0]
+    
+    #위처럼 그냥 전부 입력시켜주는거 대신 아래처럼 그냥 defaultdict사용하면 선언안된 key를 써도 keyerror가 안뜨고 값이 입력된데
+    #my_info = defaultdict(list)
+    
+    for info in infos:
+        l,e,i,f,s = info.split(" ")
+        my_info[l+e+i+f].append(int(s))
+        my_info['-'+e+i+f].append(int(s))
+        my_info[l+'-'+i+f].append(int(s))
+        my_info[l+e+'-'+f].append(int(s))
+        my_info[l+e+i+'-'].append(int(s))
+        my_info['-'+'-'+i+f].append(int(s))
+        my_info['-'+e+'-'+f].append(int(s))
+        my_info['-'+e+i+'-'].append(int(s))
+        my_info[l+'-'+'-'+f].append(int(s))
+        my_info[l+'-'+i+'-'].append(int(s))
+        my_info[l+e+'-'+'-'].append(int(s))
+        my_info['-'+'-'+'-'+f].append(int(s))
+        my_info['-'+'-'+i+'-'].append(int(s))
+        my_info['-'+e+'-'+'-'].append(int(s))
+        my_info[l+'-'+'-'+'-'].append(int(s))
+        my_info['-'+'-'+'-'+'-'].append(int(s))
+        
+    
+    for record in my_info:
+        my_info[record].sort()
+ 
+        
+    answer=[]
+    for query in queries:
+        l,e,i,f = query.split(" and ")
+        f,s=f.split(" ")
+        answer.append(len(my_info[l+e+i+f])-bisect_left(my_info[l+e+i+f], int(s)))
+     
+    return answer

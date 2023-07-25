@@ -1,0 +1,47 @@
+#dp 문제 풀듯이 문제를 풀었는데 효율성에서 실패가 나온다
+#아마 배열의 크기의 제한이 있는것같음 배열의 크기가 커지면 반복수 증가
+#다른사람의 문제풀이를보니 배열이 아니라 heapq를 사용해서 푼다거나 다익스트라를 적용시켜서 푸는것 같은데 공부해보겠음
+def solution(alp, cop, problems):
+    answer = 0
+    maxal,maxco=0,0
+    problems.append([0,0,1,0,1])
+    problems.append([0,0,0,1,1])
+    maxal,maxco=max([p[0] for p in problems]), max([p[1] for p in problems])
+    dp=[[9999999 for i in range(maxco+1)] for j in range(maxal+1)]
+    if maxal<=alp:
+        alp=maxal
+    if maxco<=cop:
+        cop=maxco
+    dp[alp][cop]=0
+    #print(dp)
+    for i in range(alp,maxal+1):
+        for j in range(cop,maxco+1):
+            for problem in problems:
+                if i>=problem[0] and j>=problem[1]:
+                    k=i+problem[2] if i+problem[2]<maxal else maxal
+                    l=j+problem[3] if j+problem[3]<maxco else maxco
+                    dp[k][l]=min(dp[k][l],dp[i][j]+problem[4])
+                
+    return dp[maxal][maxco]
+
+#heapq를 이용해서 품
+import heapq
+def solution(alp, cop, problems):
+    problems += [[0, 0, 1, 0, 1], [0, 0, 0, 1, 1]]
+    def put(tcost, key):
+        if key not in dp or tcost < dp[key]:
+            dp[key] = tcost
+            heapq.heappush(q, (tcost, key))
+    dp = {(alp, cop): 0}
+    algoal = max(i[0] for i in problems)
+    cogoal = max(i[1] for i in problems)
+    q = [(0, (alp, cop))]
+    while q[0][1][0] < algoal or q[0][1][1] < cogoal:
+        ct, (cal, cco) = heapq.heappop(q)
+        for alreq, coreq, alrwd, corwd, cost in problems:
+            if cal >= alreq and cco >= coreq:
+                put(ct+cost, (min(cal+alrwd, 150), min(cco+corwd, 150)))
+    return q[0][0]
+
+
+

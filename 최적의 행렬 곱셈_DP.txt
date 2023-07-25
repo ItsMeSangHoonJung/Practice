@@ -1,0 +1,16 @@
+def solution(m):
+    answer = 0
+    dp=[[999999999999 for x in m] for y in m]
+    for i in range(len(m)):
+        dp[i][i]=0
+        
+    for i in range(len(m)):
+        
+        for j in range(len(m)-i):
+            a=j
+            b=j+i
+            
+            for k in range(a,b):
+                dp[a][b]=min(dp[a][b], dp[a][k]+dp[k+1][b]+(m[a][0] * m[k][1] * m[b][1]))
+    #print(dp)
+    return dp[0][len(m)-1]

@@ -1,0 +1,40 @@
+#예외설정을 잘해주자 주어진 테스트 케이스로 모든 것을 잡아내지못함!
+from collections import deque
+def solution(cacheSize, cities):
+    answer = 0
+    cache=[]
+    if cacheSize == 0:
+        return len(cities)*5
+    
+    for city in cities:
+        city = city.upper()
+        if city not in cache:
+            answer+=5
+            if len(cache)==0:
+                cache.append(city)
+            elif len(cache)>=cacheSize:
+                cache.pop(0)
+                cache.append(city)
+            else:
+                cache.append(city)
+        else:
+            answer+=1
+            cache.append(cache.pop(cache.index(city)))
+    return answer
+
+#deque 에서 maxlen개념과 remove()를 이용해서 더 간결하게 푼사람이 있음
+
+def solution(cacheSize, cities):
+    import collections
+    cache = collections.deque(maxlen=cacheSize)
+    time = 0
+    for i in cities:
+        s = i.lower()
+        if s in cache:
+            cache.remove(s)
+            cache.append(s)
+            time += 1
+        else:
+            cache.append(s)
+            time += 5
+    return time
