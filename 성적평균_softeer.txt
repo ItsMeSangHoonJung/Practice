@@ -1,0 +1,17 @@
+#프로그래머스가 아닌곳에서 하니까 쫌 햇갈리네요 input()함수, 자료형, round 반올림함수
+import sys
+n,k= map (int,input().split(" "))
+
+S = input().split(" ")
+gugan=[]
+for i in range(k):
+    gugan.append(input().split(" "))
+
+
+for g in gugan:
+    hap=0
+    for i in range(int(g[0]),int(g[1])+1):
+        hap+=int(S[i-1])
+    print(round(hap/(int(g[1])-int(g[0])+1),2))
+
+

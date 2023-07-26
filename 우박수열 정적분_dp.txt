@@ -1,0 +1,29 @@
+def solution(k, ranges):
+    answer = []
+    
+    cnt=0
+    coordinate = [k]
+    while True:
+        if k <= 1:
+            break
+        if k%2 == 0 :
+            k/=2
+        else:
+            k=k*3+1
+        cnt+=1
+        coordinate.append(k)
+    
+    area = [0]*(cnt)
+    for i in range(cnt):
+        area[i]=(coordinate[i]+coordinate[i+1])/2
+    
+    for r in ranges:
+        res=0
+        if r[0]>cnt+r[1]:
+            answer.append(-1)
+            continue
+        for i in range(r[0],cnt+r[1]):
+            res+=area[i]
+        answer.append(res)
+
+    return answer

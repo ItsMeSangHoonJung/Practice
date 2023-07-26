@@ -1,0 +1,47 @@
+from collections import deque
+def solution(board):
+    answer = 9999999
+    d = [[0,1],[0,-1],[1,0],[-1,0]] # 오른쪽 , 왼쪽, 아래, 위
+
+    
+    for i in range(len(board)):
+        board[i]='D'+board[i]+'D'
+    new_board=["D"*len(board[0])] + board +["D"*len(board[0])]
+    
+    """for i in range(len(new_board)):
+        print(new_board[i])"""
+        
+    for i in range(len(new_board)):
+        for j in range(len(new_board[0])):
+            if new_board[i][j]=='R':
+                start=(i,j)
+            elif new_board[i][j]=='G':
+                end=(i,j)
+    #print(start,end)
+    
+    
+    q=deque()
+    visited = set()
+    visited.add(start)
+    q.append([0,start,visited])
+    
+    while q:
+        cnt,(x,y),visited = q.popleft()
+
+        for i in range(4):
+            nx,ny=x,y
+            while new_board[nx][ny]!="D":
+                nx+=d[i][0]
+                ny+=d[i][1]
+            nx-=d[i][0]
+            ny-=d[i][1]
+            if (nx,ny) in visited:
+                continue
+            else: 
+                visited.add((nx,ny))
+            if (nx,ny) == end:
+                return cnt+1
+            else:
+                q.append([cnt+1,(nx,ny),visited])
+        #print(q)
+    return -1

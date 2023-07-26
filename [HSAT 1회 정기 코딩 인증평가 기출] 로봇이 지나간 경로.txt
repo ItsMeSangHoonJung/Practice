@@ -1,0 +1,73 @@
+#완전구현문제
+import sys
+from pprint import pprint
+row,col = map(int,input().split())
+
+board = []
+for x in range(row):
+    board.append(input())
+
+for x in range(row):
+    for y in range(col):
+        if board[x][y]=='#':
+            break
+    else:
+        continue
+    break
+point = [x,y]
+q=[]
+q.append(point)
+
+visit=[[0 for _ in range(col)] for _ in range(row)]
+visit[x][y]=1
+#print(x,y)
+d=[[0,-1],[1,0],[0,1],[-1,0]] # 왼 아래 오 위
+lastd=0
+while q:
+    x,y = q.pop()
+    
+    for i in range(4):
+        nx,ny=x+2*d[i][0],y+2*d[i][1]
+        if 0<=nx<row and 0<=ny<col:
+            if(board[nx][ny] == '#'and board[nx-d[i][0]][ny-d[i][1]]=="#" and visit[nx][ny]==0):
+                q.append([nx,ny])
+                lastd=i
+                visit[nx][ny]=1
+                
+    
+
+
+
+print(x+1,y+1)
+if lastd == 0:
+    print(">")
+elif lastd == 1:
+    print("^")
+elif lastd == 2:
+    print("<")
+elif lastd == 3:
+    print("v")
+
+path="A"
+
+q.append([lastd,x,y])
+visit=[[0 for _ in range(col)] for _ in range(row)]
+visit[x][y]=1
+while q:
+    prevd,x,y = q.pop()
+    
+    for i in range(4):
+        nx,ny=x+2*d[i][0],y+2*d[i][1]
+        if 0<=nx<row and 0<=ny<col:
+            if(board[nx][ny] == '#'and board[nx-d[i][0]][ny-d[i][1]]=="#" and visit[nx][ny]==0):
+                #왼 아래 오 위 0 1 2 3
+                if prevd == i :
+                    path+='A'
+                elif (prevd+1)%4 == i:
+                    path+='LA'
+                elif (i+1)%4 == prevd:
+                    path+='RA'
+                q.append([i,nx,ny])
+
+                visit[nx][ny]=1
+print(path)
