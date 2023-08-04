@@ -1,0 +1,18 @@
+#거의 수학문제였음 MATH함수를 좀더 공부하자.
+import math
+def solution(w,h):
+    ans=0
+    a=h/w
+    if math.gcd(w,h)==1:
+        return (w-1)*(h-1)
+    else:
+        ww,hh=int(w/math.gcd(w,h)),int(h/math.gcd(w,h))
+        for i in range(ww):
+            ans += hh-math.ceil(a*(i+1))
+            
+        return ((ww * (h-hh)) + 2*ans)* math.gcd(w,h)
+    #아래 방법은 w가 1억까지 올수있어서 시간복잡도에 걸림.
+    """answer = 0
+    for x in range(w):
+        answer += h-math.ceil(a*(x+1))
+    return answer*2"""

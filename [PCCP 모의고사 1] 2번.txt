@@ -1,0 +1,17 @@
+from itertools import permutations
+def solution(ability):
+    answer = 0
+    num_sport= len(ability[0])
+    num_person = len(ability)
+    lst=[i for i in range(0,num_person)]
+    
+    maxscore = 0
+    for combi in permutations(lst,num_sport):
+        score = 0
+        for i in range(num_sport):
+            score+= ability[combi[i]][i]
+            if score>maxscore:  # 시간좀 줄일라고 넣어봄
+                break
+        maxscore = max(maxscore,score)
+        
+    return maxscore

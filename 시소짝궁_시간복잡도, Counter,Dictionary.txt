@@ -1,0 +1,26 @@
+#dictionary를 통해서 몸무게마다 몇명의 사람이 있는지 생각하고 복잡도를 O(N)으로 풀어야함
+#dictionary에 몸무게 갯수 저장하는것 대신 Counter함수로 수행함
+#그냥 for문 2개로 풀면 시간제한때문에 안풀림
+from collections import Counter
+def solution(weights):
+    answer = 0
+    counter = Counter(weights)
+    for i in range(100, 1001):
+        if counter[i] > 0:
+            answer += counter[i] * (counter[i] - 1) // 2 # 같은 수끼리
+            answer += counter[i] * counter[i * 3 / 2]
+            answer += counter[i] * counter[i * 2]
+            answer += counter[i] * counter[i * 4 / 3]
+
+    return answer
+"""from itertools import combinations
+def check(a,b):
+    if a == b or 3*a==4*b or  4*a == 3*b or a == 2*b or 2*a == b or 2*a == 3*b or 3*a == 2*b:
+        return 1
+    return 0
+def solution(weights):
+    ans = 0
+    for a,b in combinations(weights,2):
+        if check(a,b):
+            ans+=1
+    return ans"""

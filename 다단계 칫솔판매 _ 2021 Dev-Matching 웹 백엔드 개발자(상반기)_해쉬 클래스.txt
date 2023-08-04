@@ -1,0 +1,55 @@
+#class 사용과 for문대신 해쉬를 사용해서 시간복잡도 줄인것 + 예외설정
+class piramid():
+    def __init__(self):
+        self.child=[]
+        self.parent=None
+        self.name=None
+        self.data=0
+    def printp(self):
+        print("name:",self.name,"floor:",self.floor,"childs:",end=":")
+        for i in range(len(self.child)):
+            print(self.child[i].name,end=" ")
+        print(self.data)
+        for i in range(len(self.child)):
+            self.child[i].printp()
+
+def solution(enroll, referral, seller, amount):
+    answer = []
+    p = piramid()
+    p.name="center"
+    p_enroll = []
+    my_dict={}
+    for e in enroll:
+        new_p= piramid()
+        new_p.name=e
+        p_enroll.append(new_p)
+        my_dict[e]=new_p
+    for i,r in enumerate(referral):
+        if r =='-':
+            p_enroll[i].parent=p
+            p.child.append(p_enroll[i])
+        else:
+            my_dict[r].child.append(p_enroll[i])
+            my_dict[p_enroll[i].name].parent=my_dict[r]
+            """for e in p_enroll:
+                if e.name == r:
+                    p_enroll[i].parent=e
+                    e.child.append(p_enroll[i])"""
+
+        
+    for i,s in enumerate(seller):       
+        money = amount[i]*100
+        charge=int(money/10)
+        now=my_dict[s]
+        while now.parent!=None:
+            now.data+=money-charge
+            money=charge
+            if money == 0:
+                break
+            charge=int(charge/10)
+            now=now.parent
+            
+
+    for e in p_enroll:
+        answer.append(e.data)
+    return answer
