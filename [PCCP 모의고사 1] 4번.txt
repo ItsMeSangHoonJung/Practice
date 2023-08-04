@@ -1,0 +1,79 @@
+#시간초과
+def solution(program):
+    answer = [0 for _ in range(11)]  # 인덱스 0~9까지 총 10개의 프로세스를 나타내므로 크기를 10으로 수정
+    program = sorted(program, key=lambda x: (x[1], x[0]), reverse=True)
+    time = 0
+    wait = {1: [], 2: [], 3: [], 4: [], 5: [], 6: [], 7: [], 8: [], 9: []}
+    
+    while program or any(wait.values()):
+        for i in range(1, 10):
+            if wait[i]:
+                wait[i].sort(reverse=True)  # sorted 대신 sort를 사용하여 리스트 내부를 정렬
+                s, t = wait[i].pop()
+                answer[i] += max(time - s, 0)
+                time += t
+                break
+        
+        while program and program[-1][1] <= time:
+            l, s, t = program.pop()
+            wait[l].append([s, t])
+    
+    answer[0] = time
+    return answer
+
+from heapq import heappush, heappop
+from collections import deque
+def solution(program):
+    answer = [0 for _ in range(11)]
+    wait = [] 
+    
+    
+    while program:
+        program = deque(sorted(program, key=lambda x: (x[1]+(x[0]/100))))
+        x=program.popleft()
+        time=x[1]
+        program=deque(program)
+        heappush(wait,((x[0]+x[1]/100000000),x))
+        while wait :
+            l,s,t = heappop(wait)[1]
+            #print(l,s,t)
+            answer[l]+=max(0,time-s)
+            time+=t
+            cnt=0
+            if program:
+                for i,p in enumerate(program):
+                    if p[1]<=time:
+                        heappush(wait,((p[0]+p[1]/100000000),p))
+                        cnt+=1
+                    else:
+                        break
+                for _ in range(cnt):
+                    program.popleft()
+                #print(wait,program)
+        if program:
+            x=program.popleft()
+            time = x[1]
+            heappush(wait,((x[0]+x[1]/100000000),x))
+            while wait :
+                l,s,t = heappop(wait)[1]
+                #print(l,s,t)
+                answer[l]+=max(0,time-s)
+                time+=t
+                cnt=0
+                if program:
+                    for i,p in enumerate(program):
+                        if p[1]<=time:
+                            heappush(wait,((p[0]+p[1]/100000000),p))
+                            cnt+=1
+                        else:
+                            break
+                    for _ in range(cnt):
+                        program.popleft()
+                    #print(wait,program)
+        else:
+            break
+        
+    answer[0]=time
+    
+    return answer
+        
