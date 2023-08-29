@@ -1,0 +1,55 @@
+import sys
+from itertools import product
+
+num, color_num = map(int,input().split())
+if color_num == 1:
+    print(0)
+else:
+    dots=[[]for _ in range(color_num)]
+    for i in range(num):
+        x,y,color = map(int,input().split())
+        dots[color-1].append((x,y))
+    #print(dots)
+
+    res=10000000
+    for c in product(*dots):
+        xmin,xmax,ymin,ymax=10000,-10000,10000,-10000
+        for k in range(color_num):
+            if c[k][0]>xmax:
+                xmax=c[k][0]
+            if c[k][0]<xmin:
+                xmin=c[k][0]
+            if c[k][1]>ymax:
+                ymax=c[k][1]
+            if c[k][1]<ymin:
+                ymin=c[k][1]
+        res = min(res,(xmax-xmin) * (ymax-ymin))
+
+    print(res)
+
+# 완전탐색을 dfs로 바꾸어서 풀었음 
+# dfs로 풀때도 예외조치를 안해주면 시간초과가 나더라
+import sys
+def dfs(color,left,right,bottom,top):
+    global minarea
+    if color == k:
+        minarea = min(minarea,((right-left)*(top-bottom)))
+        return 
+    for point in colors[color]:
+        x,y=point[0],point[1]
+        leftN,rightN,bottomN,topN = min(left,x),max(right,x),min(bottom,y),max(top,y)
+        if minarea > (rightN-leftN)*(topN-bottomN):
+            dfs(color+1,leftN,rightN,bottomN,topN)
+    return
+
+n,k = map(int,input().split())
+
+colors= [[] for _ in range(k)]
+
+for _ in range(n):
+    point = list(map(int,input().split()))
+    colors[point[2]-1].append(point[:2])
+
+minarea = 2000*2000
+dfs(0,1000,-1000,1000,-1000)
+print(minarea)
