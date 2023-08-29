@@ -16,8 +16,32 @@ def solution(begin, target, words):
             for i in range(word_size):
                 if word[:i]+word[i+1:]==now[0][:i]+now[0][i+1:] and word[i]!=now[0][i]:
                     q.append((word,now[1]+1))
-                
-                
+
+    return answer
+
+# visit 배열을 추가해서 시간복잡도를 매우 줄임
+from collections import deque
+def solution(begin, target, words):
+    answer = 0
+    l = len(begin)
+    visit = [0 for _ in words]
+
+    q = deque()
     
+    q.append((begin,0))
+    
+    while q:
+        my_word,cnt= q.popleft()
+        if my_word == target:
+            answer = cnt
+            print(cnt)
+            break
+        for idx, word in enumerate(words):
+            if visit[idx]:
+                continue
+            for i in range(l):
+                if (word[:i]+word[i+1:]==my_word[:i]+my_word[i+1:] and word[i] != my_word[i]):
+                    visit[idx]=1
+                    q.append((word,cnt+1))
     
     return answer
