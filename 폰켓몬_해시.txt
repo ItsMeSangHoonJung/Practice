@@ -1,0 +1,13 @@
+from collections import defaultdict
+def solution(nums):
+    answer = 0
+    my_dict=defaultdict(int)
+    for n in nums:
+        my_dict[n]+=1              
+    return min(len(my_dict),len(nums)//2)
+
+
+#해시 사용안하고 더 간결하게 풀수있음
+
+def solution(nums):
+    return min(len(nums)//2,len(set(nums)))

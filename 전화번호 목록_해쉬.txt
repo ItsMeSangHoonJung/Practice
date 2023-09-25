@@ -1,0 +1,13 @@
+from collections import defaultdict
+def solution(phone_book):
+    answer = True
+    phone_book = sorted(phone_book,key = lambda x : len(x),reverse=True)
+    my_dict = defaultdict(int)
+    for num in phone_book:
+        if my_dict[num]==1:
+            return False
+        for i in range(len(num)+1):
+            my_dict[num[0:i]] =1
+        
+    
+    return answer
